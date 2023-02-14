@@ -1,0 +1,24 @@
+tab-el
+  [t4-role="tabPanel"]
+    width: 100%
+    height: 100%
+    // 要用slide一定要加喔 不然會壞掉
+    overflow: hidden
+    opacity: 0
+// 可自訂 - 鍵頭按鈕樣式
+[t4-role="prev"],
+[t4-role="next"]
+  opacity: 1
+  transition: 0.5s opacity
+  cursor: pointer
+  &:hover
+    opacity: 0.7
+  &[disabled]
+    opacity: 0.1
+    pointer-events: none
+// 頁籤樣式
+[aria-selected="false"]
+  opacity: 0.7
+[aria-selected="true"]
+  opacity: 1
+  transition: 0.5s opacity

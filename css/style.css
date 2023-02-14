@@ -1,0 +1,168 @@
+@charset "UTF-8";
+body {
+  background: #f1efe9;
+  font-family: "微軟正黑體";
+  font-size: 12px;
+  line-height: 1.8;
+}
+
+main {
+  width: 90%;
+  max-width: 1000px;
+  margin: 30px auto;
+}
+main section:not(:last-child) {
+  margin-bottom: 100px;
+}
+main .container {
+  position: relative;
+}
+main h2 {
+  font-size: 18px;
+}
+main .tab-panel {
+  padding: 20px 10px;
+}
+
+.section4 .content {
+  position: relative;
+  width: 300px;
+  border-radius: 50%;
+  border: 1px solid #000;
+}
+.section4 .content::after {
+  content: "";
+  width: 100%;
+  display: block;
+  padding-top: 100%;
+}
+.section4 .content tab-el {
+  position: absolute;
+  width: 100%;
+  top: 50%;
+  left: 50%;
+  -webkit-transform: translate(-50%, -60%);
+          transform: translate(-50%, -60%);
+  text-align: center;
+}
+.section4 .content .btn {
+  top: unset;
+  bottom: 15px;
+  right: 50%;
+  -webkit-transform: translate(50%, -50%);
+          transform: translate(50%, -50%);
+}
+.section4 .content .step {
+  text-align: center;
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  background: #222;
+  color: #FFF;
+  padding: 5px 10px;
+  -webkit-transform: skewX(-15deg);
+          transform: skewX(-15deg);
+  letter-spacing: 0.5px;
+}
+.section4 .content .step .step-show {
+  font-size: 24px;
+  margin-left: 10px;
+}
+
+.section5 {
+  min-height: 300px;
+}
+
+.tab-title {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: start;
+      -ms-flex-pack: start;
+          justify-content: flex-start;
+  -webkit-box-align: stretch;
+      -ms-flex-align: stretch;
+          align-items: stretch;
+  padding-left: 5px;
+  margin: 0;
+  list-style: none;
+  border-bottom: 1px solid #ccc;
+}
+.tab-title .item {
+  position: relative;
+  margin: 0 5px;
+  padding: 10px 25px;
+  list-style: none;
+  -webkit-box-sizing: border-box;
+          box-sizing: border-box;
+  cursor: pointer;
+}
+.tab-title .item span {
+  color: #ccc;
+  line-height: 2;
+  -webkit-user-select: none;
+     -moz-user-select: none;
+      -ms-user-select: none;
+          user-select: none;
+}
+.tab-title .item::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  -webkit-transform: translate(-50%, 50%);
+          transform: translate(-50%, 50%);
+  height: 2px;
+  width: 0%;
+  background: #000;
+  -webkit-transition: width 0.5s;
+  transition: width 0.5s;
+}
+.tab-title .item:hover span {
+  color: #000;
+}
+.tab-title .item[aria-selected=true] span {
+  color: #000;
+}
+.tab-title .item[aria-selected=true]::after {
+  width: 100%;
+}
+
+.section6 .content {
+  min-height: 80vh;
+}
+
+.btn {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  gap: 20px;
+  color: #111;
+  position: absolute;
+  top: 20px;
+  right: 0;
+  -webkit-transform: translate(0%, 25%);
+          transform: translate(0%, 25%);
+  z-index: 99;
+}
+.btn .item {
+  width: 20px;
+  height: 20px;
+  font-size: 16px;
+  cursor: pointer;
+  -webkit-transition: 0.5s;
+  transition: 0.5s;
+}
+.btn .item:hover {
+  opacity: 0.4;
+}
+.btn .item[disabled] {
+  opacity: 0.1;
+  pointer-events: none;
+}
