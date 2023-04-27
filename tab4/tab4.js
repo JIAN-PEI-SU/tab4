@@ -31,26 +31,27 @@ class Tab4 extends HTMLElement {
 
   #create() {
     // 抓值
-    this.t.tabPanels = Array.from(this.querySelectorAll('[t4-role="tabPanel"]'))
+    const { t } = this
     const { SETTINGS } = OPTIONS
+    t.tabPanels = Array.from(this.querySelectorAll('[t4-role="tabPanel"]'))
     // 基本設定 + 判斷
-    this.t.stepOutput = SETTINGS.stepOutput
-    this.t.type = this.getAttribute('t4-type') ?? SETTINGS.type
-    this.t.display = this.getAttribute('t4-display') ?? SETTINGS.display
-    this.t.defaultPage = parseInt(this.getAttribute('t4-defaultPage') ?? SETTINGS.defaultPage, 10)
+    t.stepOutput = SETTINGS.stepOutput
+    t.type = this.getAttribute('t4-type') ?? SETTINGS.type
+    t.display = this.getAttribute('t4-display') ?? SETTINGS.display
+    t.defaultPage = parseInt(this.getAttribute('t4-defaultPage') ?? SETTINGS.defaultPage, 10)
     // 錨點設定
-    this.t.anchor = this.getAttribute('t4-anchor')
-    this.t.gap = this.getAttribute('t4-gap') ?? SETTINGS.anchorGap
+    t.anchor = this.getAttribute('t4-anchor')
+    t.gap = this.getAttribute('t4-gap') ?? SETTINGS.anchorGap
     // 動畫設定
-    this.t.transition = {}
-    this.t.transition.duration = this.getAttribute('t4-duration') ?? SETTINGS.transition.duration
-    this.t.transition.function = this.getAttribute('t4-function') ?? SETTINGS.transition.function
-    this.t.transition.delay = this.getAttribute('t4-delay') ?? SETTINGS.transition.delay
+    t.transition = {}
+    t.transition.duration = this.getAttribute('t4-duration') ?? SETTINGS.transition.duration
+    t.transition.function = this.getAttribute('t4-function') ?? SETTINGS.transition.function
+    t.transition.delay = this.getAttribute('t4-delay') ?? SETTINGS.transition.delay
     // 結構外
-    this.t.tabs = Array.from(document.querySelectorAll(`[t4-control="${this.t.name}"] [t4-role="tab"]`))
-    this.t.next = document.querySelector(`[t4-role="next"][t4-control="${this.t.name}"]`)
-    this.t.prev = document.querySelector(`[t4-role="prev"][t4-control="${this.t.name}"]`)
-    this.t.step = document.querySelector(`${this.t.stepOutput}[t4-control="${this.t.name}"]`)
+    t.tabs = Array.from(document.querySelectorAll(`[t4-control="${t.name}"] [t4-role="tab"]`))
+    t.next = document.querySelector(`[t4-role="next"][t4-control="${t.name}"]`)
+    t.prev = document.querySelector(`[t4-role="prev"][t4-control="${t.name}"]`)
+    t.step = document.querySelector(`${t.stepOutput}[t4-control="${t.name}"]`)
     this.#init()
   }
   // 初始化設定
@@ -80,84 +81,91 @@ class Tab4 extends HTMLElement {
   }
   // 步驟狀態
   #step(page) {
+    const { t } = this
+    const step = t.step
     let current = page + 1
-    this.t.step.textContent = `${current}`
-    this.t.step.setAttribute('now-page', current)
+    step.textContent = `${current}`
+    step.setAttribute('now-page', current)
   }
   // 按鈕狀態
   #btnState() {
-    if (this.t.tabPanels.length == 1) {
-      this.t.next.setAttribute('disabled', '')
-      this.t.prev.setAttribute('disabled', '')
+    const { t } = this
+    const next = t.next
+    const prev = t.prev
+    if (t.tabPanels.length === 1) {
+      next.setAttribute('disabled', '')
+      prev.setAttribute('disabled', '')
     } else {
-      if (this.t.activeTab == this.t.tabPanels.length - 1) {
-        this.t.next.setAttribute('disabled', '')
-        this.t.prev.removeAttribute('disabled')
-      } else if (this.t.activeTab == 0) {
-        this.t.prev.setAttribute('disabled', '')
-        this.t.next.removeAttribute('disabled')
+      if (t.activeTab === t.tabPanels.length - 1) {
+        next.setAttribute('disabled', '')
+        prev.removeAttribute('disabled')
+      } else if (t.activeTab === 0) {
+        prev.setAttribute('disabled', '')
+        next.removeAttribute('disabled')
       } else {
-        this.t.next.removeAttribute('disabled')
-        this.t.prev.removeAttribute('disabled')
+        next.removeAttribute('disabled')
+        prev.removeAttribute('disabled')
       }
     }
   }
   // 動畫設定
   // 消失動畫
   #animationHide(index) {
+    const { t } = this
     // 動畫 消失 動畫 出現 搭配 settimeout 使用
-    this.t.tabPanels[index].classList.add('hide')
-    switch (this.t.display) {
+    t.tabPanels[index].classList.add('hide')
+    switch (t.display) {
       case 'fade':
-        this.t.tabPanels[index].style['display'] = 'none'
-        this.t.tabPanels[index].style['opacity'] = '0'
+        t.tabPanels[index].style['display'] = 'none'
+        t.tabPanels[index].style['opacity'] = '0'
         break
       case 'slide':
-        this.t.tabPanels[index].style['display'] = 'none'
-        this.t.tabPanels[index].style['opacity'] = '0'
-        this.t.tabPanels[index].style['max-height'] = 'unset'
+        t.tabPanels[index].style['display'] = 'none'
+        t.tabPanels[index].style['opacity'] = '0'
+        t.tabPanels[index].style['height'] = '0'
         break
       case 'slide-swiper':
-        this.t.tabPanels[index].style['display'] = 'none'
+        t.tabPanels[index].style['display'] = 'none'
         break
       default:
-        this.t.tabPanels[index].style['display'] = 'none'
+        t.tabPanels[index].style['display'] = 'none'
         break
     }
     // this.t.tabPanels[el].hidden = true
   }
   // 出現動畫
   #animationShow(index) {
-    this.t.tabPanels[index].classList.remove('hide')
-    this.t.tabPanels[index].style['transition-duration'] = this.t.transition.duration
-    this.t.tabPanels[index].style['transition-timing-function'] = this.t.transition.function
-    this.t.tabPanels[index].style['transition-delay'] = this.t.transition.delay
-    switch (this.t.display) {
+    const { t } = this
+    t.tabPanels[index].classList.remove('hide')
+    t.tabPanels[index].style['transition-duration'] = t.transition.duration
+    t.tabPanels[index].style['transition-timing-function'] = t.transition.function
+    t.tabPanels[index].style['transition-delay'] = t.transition.delay
+    switch (t.display) {
       case 'fade':
-        this.t.tabPanels[index].style['display'] = 'block'
-        this.t.tabPanels[index].style['opacity'] = '0'
+        t.tabPanels[index].style['display'] = 'block'
+        t.tabPanels[index].style['opacity'] = '0'
         let timer = setTimeout(() => {
           clearInterval(timer)
-          this.t.tabPanels[index].style['opacity'] = '1'
+          t.tabPanels[index].style['opacity'] = '1'
         }, 100)
         break
       case 'slide':
-        this.t.tabPanels[index].style['display'] = 'block'
-        const clientHeight = this.t.tabPanels[index].offsetHeight
-        this.t.tabPanels[index].style['opacity'] = '1'
-        this.t.tabPanels[index].style['max-height'] = '0'
+        t.tabPanels[index].style['display'] = 'block'
+        const clientHeight = t.tabPanels[index].offsetHeight + t.tabPanels[index].firstElementChild.offsetHeight
+        t.tabPanels[index].style['height'] = '0'
         timer = setTimeout(() => {
           clearInterval(timer)
-          this.t.tabPanels[index].style['max-height'] = clientHeight + 'px'
+          t.tabPanels[index].style['height'] = clientHeight + 'px'
+          t.tabPanels[index].style['opacity'] = '1'
         }, 100)
         break
       case 'slide-swiper':
-        this.t.tabPanels[index].style['display'] = 'block'
-        console.log(this.t.display, '還沒做好啦!!!!')
+        t.tabPanels[index].style['display'] = 'block'
+        console.log(t.display, '還沒做好啦!!!!')
         break
       default:
-        this.t.tabPanels[index].style['display'] = 'block'
-        console.log(this.t.display, '沒有這個效果請自己想辦法!!!!')
+        t.tabPanels[index].style['display'] = 'block'
+        console.log(t.display, '沒有這個效果請自己想辦法!!!!')
         break
     }
     // this.t.tabPanels[el].hidden = false
@@ -193,32 +201,33 @@ class Tab4 extends HTMLElement {
   }
   // 判斷元件並執行
   #isTrue(fun, val) {
+    const { t } = this
     switch (fun) {
       case 'step':
-        if (isElement(this.t.step)) {
+        if (isElement(t.step)) {
           this.#step(val)
         }
         break
       case 'eventAnchor':
-        if (this.t.anchor) {
+        if (t.anchor) {
           this.#eventAnchor(val)
         }
         break
       case 'btnState':
-        if (isElement(this.t.next) || isElement(this.t.prev)) {
+        if (isElement(t.next) || isElement(t.prev)) {
           this.#btnState(val)
         }
         break
       case 'eventNext':
-        if (isElement(this.t.next)) {
-          this.t.next.addEventListener('click', () => {
+        if (isElement(t.next)) {
+          t.next.addEventListener('click', () => {
             this.goNext()
           })
         }
         break
       case 'eventPrev':
-        if (isElement(this.t.prev)) {
-          this.t.prev.addEventListener('click', () => {
+        if (isElement(t.prev)) {
+          t.prev.addEventListener('click', () => {
             this.goPrev()
           })
         }
@@ -232,17 +241,18 @@ class Tab4 extends HTMLElement {
   // 頁籤切換
   // 外部呼叫方法 $0.setActiveTab(0)
   setActiveTab(index) {
+    const { t } = this
     // 內容狀態
-    this.t.tabPanels.forEach((panel, i) => {
+    t.tabPanels.forEach((panel, i) => {
       if (i === index) {
         this.#animationShow(i)
       } else {
         this.#animationHide(i)
       }
     })
-    if (this.t.type != 'process') {
+    if (t.type != 'process') {
       // 頁籤按鈕狀態
-      this.t.tabs.forEach((tab, i) => {
+      t.tabs.forEach((tab, i) => {
         if (i === index) {
           tab.setAttribute('aria-selected', true)
         } else {
@@ -250,7 +260,7 @@ class Tab4 extends HTMLElement {
         }
       })
     }
-    this.t.activeTab = index
+    t.activeTab = index
     this.#isTrue('step', index)
     this.#isTrue('btnState')
   }
@@ -258,16 +268,17 @@ class Tab4 extends HTMLElement {
   // 按鈕切換
   // 外部呼叫方法 $0.goNext()
   goNext() {
-    this.t.activeTab =
-      this.t.activeTab + 1 > this.t.tabPanels.length - 1 ? this.t.tabPanels.length - 1 : this.t.activeTab + 1
-    this.setActiveTab(this.t.activeTab)
-    this.#btnState()
+    const { t } = this
+    t.activeTab = t.activeTab + 1 > t.tabPanels.length - 1 ? t.tabPanels.length - 1 : t.activeTab + 1
+    this.setActiveTab(t.activeTab)
+    this.#isTrue('btnState')
   }
   // 外部呼叫方法 $0.goPrev()
   goPrev() {
-    this.t.activeTab = this.t.activeTab - 1 < 0 ? 0 : this.t.activeTab - 1
-    this.setActiveTab(this.t.activeTab)
-    this.#btnState()
+    const { t } = this
+    t.activeTab = t.activeTab - 1 < 0 ? 0 : t.activeTab - 1
+    this.setActiveTab(t.activeTab)
+    this.#isTrue('btnState')
   }
 }
 
